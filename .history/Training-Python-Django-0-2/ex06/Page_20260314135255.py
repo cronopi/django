@@ -2,6 +2,7 @@ from elem import Elem
 
 
 class Page:
+	# Valid tags that can appear in HTML structure according to subject
 	VALID_TAGS = {
 		'html', 'head', 'body', 'title', 'meta', 'img', 'table',
 		'th', 'tr', 'td', 'ul', 'ol', 'li', 'h1', 'h2', 'p', 'div', 'span', 'hr', 'br'
