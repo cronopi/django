@@ -121,12 +121,9 @@ class Page:
 				if node.tag == 'tr':
 					if not self._check_tr_content(node):
 						return False
-
-				if node.tag == 'table':
-					if not self._check_table_content(node):
-						return False
-
-
+			if node.tag == 'table':
+				if not self._check_table_content(node):
+					return False
 				for child in node.content:
 					nodes_to_check.append(child)
 

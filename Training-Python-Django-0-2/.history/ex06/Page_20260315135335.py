@@ -121,12 +121,9 @@ class Page:
 				if node.tag == 'tr':
 					if not self._check_tr_content(node):
 						return False
-
-				if node.tag == 'table':
-					if not self._check_table_content(node):
-						return False
-
-
+			if node.tag == 'table':
+				if not self._check_table_content(node):
+					return False
 				for child in node.content:
 					nodes_to_check.append(child)
 
@@ -214,7 +211,7 @@ if __name__ == '__main__':
 	print(page)
 	print("\n--- Guardando en archivo ---")
 	page.write_to_file('output.html')
-	print("Guardado en output.html")
+	print("Guardado en output.html")	
 	# TEST 2: HTML INVÁLIDO - Title sin contenido
 	print("\n\n=== TEST INVÁLIDO ===")
 	html_invalido = Html([
@@ -225,10 +222,10 @@ if __name__ == '__main__':
 			H1(Text('Hola'))
 		])
 	])
-
+	
 	page_invalido = Page(html_invalido)
 	print("¿Es válido (vacío Title)?", page_invalido.is_valid())
-
+	
 	# TEST 3: HTML INVÁLIDO - Body con P (P no está permitido en Body)
 	print("\n=== TEST INVÁLIDO 2 ===")
 	html_invalido2 = Html([
@@ -239,6 +236,6 @@ if __name__ == '__main__':
 			P(Text('Esto no debería estar en Body'))  # ❌ P no permitido en Body
 		])
 	])
-
+	
 	page_invalido2 = Page(html_invalido2)
 	print("¿Es válido (P en Body)?", page_invalido2.is_valid())

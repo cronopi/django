@@ -126,7 +126,7 @@ class Page:
 					if not self._check_table_content(node):
 						return False
 
-
+				# Agregar todos los hijos al final
 				for child in node.content:
 					nodes_to_check.append(child)
 

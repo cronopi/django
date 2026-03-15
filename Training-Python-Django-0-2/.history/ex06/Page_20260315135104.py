@@ -121,12 +121,9 @@ class Page:
 				if node.tag == 'tr':
 					if not self._check_tr_content(node):
 						return False
-
-				if node.tag == 'table':
-					if not self._check_table_content(node):
-						return False
-
-
+			if node.tag == 'table':
+				if not self._check_table_content(node):
+					return False
 				for child in node.content:
 					nodes_to_check.append(child)
 
@@ -160,85 +157,14 @@ class Page:
 	def __str__(self):
 		"""Devuelve el HTML con doctype si el root es 'html'"""
 		html_str = str(self.elem)
-
+		
 		# Agregar doctype si y solo si el root es 'html'
 		if self.elem.tag == 'html':
 			return '<!DOCTYPE html>\n' + html_str
-
+		
 		return html_str
 
 	def write_to_file(self, filename):
 		"""Escribe el HTML en un archivo con doctype si es necesario"""
 		with open(filename, 'w') as f:
 			f.write(str(self))
-
-
-if __name__ == '__main__':
-	from elem import Text
-	from elements import Html, Head, Body, Title, H1, P, Div, Span, Ul, Li, Table, Tr, Th, Td
-
-	# Crear un HTML completo y válido
-	html = Html([
-		Head([
-			Title(Text('Mi Página'))
-		]),
-		Body([
-			H1(Text('Bienvenido')),
-			Div([
-				P(Text('Este es un párrafo')),
-				Span(Text('Texto en span')),
-				Ul([
-					Li(Text('Item 1')),
-					Li(Text('Item 2')),
-					Li(Text('Item 3'))
-				])
-			]),
-			Table([
-				Tr([
-					Th(Text('Header 1')),
-					Th(Text('Header 2'))
-				]),
-				Tr([
-					Th(Text('Header 3')),
-					Th(Text('Header 4'))
-				])
-			])
-		])
-	])
-
-	# Crear la página y validar
-	page = Page(html)
-
-	print("¿Es válido?", page.is_valid())
-	print("\n--- HTML generado ---")
-	print(page)
-	print("\n--- Guardando en archivo ---")
-	page.write_to_file('output.html')
-	print("Guardado en output.html")
-	# TEST 2: HTML INVÁLIDO - Title sin contenido
-	print("\n\n=== TEST INVÁLIDO ===")
-	html_invalido = Html([
-		Head([
-			Title()  # ❌ Title vacío
-		]),
-		Body([
-			H1(Text('Hola'))
-		])
-	])
-
-	page_invalido = Page(html_invalido)
-	print("¿Es válido (vacío Title)?", page_invalido.is_valid())
-
-	# TEST 3: HTML INVÁLIDO - Body con P (P no está permitido en Body)
-	print("\n=== TEST INVÁLIDO 2 ===")
-	html_invalido2 = Html([
-		Head([
-			Title(Text('Test'))
-		]),
-		Body([
-			P(Text('Esto no debería estar en Body'))  # ❌ P no permitido en Body
-		])
-	])
-
-	page_invalido2 = Page(html_invalido2)
-	print("¿Es válido (P en Body)?", page_invalido2.is_valid())
