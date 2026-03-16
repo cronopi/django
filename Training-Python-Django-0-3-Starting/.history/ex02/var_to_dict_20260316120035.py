@@ -4,7 +4,7 @@ def var_to_dict(dictionary):
 		if year not in result:
 			result[year] = []
 		result[year].append(name)
-	result = dict(sorted(result.items()))
+	result = dict(sorted(result.items(), reverse=True))
 	#print(f"{result}")
 	for year, name in result.items():
 		print(f"{year} : {' '.join(name)}")
@@ -46,5 +46,6 @@ if __name__ == "__main__":
 		('Burton' , '1939')
 		]
 	var_to_dict(dictionary)
-	print("\n")
+
+print("\n")
 	var_to_dict(d)
