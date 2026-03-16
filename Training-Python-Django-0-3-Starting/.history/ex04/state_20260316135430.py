@@ -1,6 +1,6 @@
 import sys
 
-def capital_city(state):
+def capital_city(capital):
 	states = {
 	    "Oregon": "OR",
 	    "Alabama": "AL",
@@ -15,11 +15,7 @@ def capital_city(state):
 	    "CO": "Denver"
 	}
 
-	if state in states:
-		code = states[state]
-		print(capital_cities[code])
-	else:
-		print("Unknown state")
+
 
 if __name__ == "__main__":
 	if len(sys.argv) != 2:
