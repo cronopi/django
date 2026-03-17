@@ -1,5 +1,61 @@
 import sys
 
+def generate_cell_html(element_name, element_data):
+
+	html = '<td>\n'
+	html += f'<h4>{element_name}</h4>\n'
+	html += '<ul>\n'
+	html += f'<li>No {element_data["number"]}</li>\n'
+	html += f'<li>{element_data["small"]}</li>\n'
+	html += f'<li>{element_data["molar"]}</li>\n'
+	html += f'<li>{element_data["electron"]} electrons</li>\n'
+	html += '</ul>\n'
+	html += '</td>\n'
+	return html
+
+def generate_table_html(table, elements):
+	html = '<table>\n'
+
+	for row in table:
+		html += '<tr>\n'
+
+		for cell in row:
+			if cell is None:
+				html += '<td></td>\n'
+			else:
+				element_name = cell
+				element_data = elements[element_name]
+				html += generate_cell_html(element_name, element_data)
+
+		html += '</tr>\n'
+
+	html += '</table>\n'
+	return html
+
+def generate_complete_html(table, elements):
+	html = '<!DOCTYPE html>\n'
+	html += '<html>\n'
+	html += '<head>\n'
+	html += '<meta charset="utf-8">\n'
+	html += '<title>Periodic Table of Elements</title>\n'
+	html += '<style>\n'
+	html += 'body { font-family: Arial, sans-serif; margin: 20px; }\n'
+	html += 'table { border-collapse: collapse; margin: 20px; }\n'
+	html += 'td { border: 1px solid black; padding: 10px; text-align: center; min-width: 80px; }\n'
+	html += 'h4 { margin: 5px 0; font-size: 14px; }\n'
+	html += 'ul { margin: 5px 0; padding-left: 15px; font-size: 11px; list-style: none; }\n'
+	html += 'li { margin: 2px 0; }\n'
+	html += '</style>\n'
+	html += '</head>\n'
+	html += '<body>\n'
+	html += '<h1>Periodic Table of Elements</h1>\n'
+
+	html += generate_table_html(table, elements)
+
+	html += '</body>\n'
+	html += '</html>\n'
+	return html
+
 def get_row(number):
 	if number <= 2:
 		return 0
@@ -33,8 +89,6 @@ def create_table():
 	table = []
 
 	table = [[None] * 18 for _ in range(7)]
-	print(len(table))
-	print(len(table[0]))
 	return table
 
 def parse_elements():
@@ -59,23 +113,16 @@ def parse_elements():
 
 if __name__ == "__main__":
 	elements = parse_elements()
-	table = create_table()
-	table = fill_table(table, elements)
+	empty_table = create_table()
+	table_complete = fill_table(empty_table, elements)
 
-	 # TEST 1: Fila 0
-	print("Fila 0, Columna 0:", table[0][0])   # Debería: Hydrogen
-	print("Fila 0, Columna 17:", table[0][17])  # Debería: Helium
+	complete_html = generate_complete_html(table_complete, elements)
 
-	# TEST 2: Fila 1
-	print("Fila 1, Columna 0:", table[1][0])   # Debería: Lithium
-	print("Fila 1, Columna 1:", table[1][1])   # Debería: Beryllium
-	print("Fila 1, Columna 12:", table[1][12]) # Debería: Boron
-	print("Fila 1, Columna 17:", table[1][17]) # Debería: Neon
+	try:
+		with open("periodic_table.html", "w", encoding="utf-8") as f:
+			f.write(complete_html)
+		print("✓ File 'periodic_table.html' created successfully!")
+	except IOError as e:
+		print(f"✗ Error writing file: {e}")
 
-	# TEST 3: Fila 2
-	print("Fila 2, Columna 0:", table[2][0])   # Debería: Sodium
-	print("Fila 2, Columna 17:", table[2][17]) # Debería: Argon
 
-	# TEST 4: Espacios vacíos
-	print("Fila 0, Columna 1:", table[0][1])   # Debería: None (vacío)
-	print(":", table[6][17])
