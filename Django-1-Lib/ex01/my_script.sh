@@ -12,7 +12,7 @@ echo "Versión de pip:"
 pip --version
 
 if  [ -d "../local_lib" ]; then
-	echo "El directorio ../local_lib ya existe."
+	echo "El directorio ../local_lib ya existe.Eliminándolo..."
 	rm -rf ../local_lib
 fi
 
@@ -23,7 +23,7 @@ pip install --target ../local_lib git+https://github.com/jaraco/path.git > ../in
 
 if [ $? -eq 0 ]; then
 	echo "La instalación se completó con éxito."
-	python3 my_program.py
+	PYTHONPATH=../local_lib python3 my_program.py
 else
 	echo "Hubo un error durante la instalación. Revisa ../install.log para más detalles."
 fi
